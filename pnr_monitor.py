@@ -5,6 +5,7 @@ import json
 from datetime import datetime, time
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from zoneinfo import ZoneInfo
 
 # ================= CONFIG =================
 
@@ -36,9 +37,12 @@ EMAIL_RECIPIENTS = [
 
 # =========================================
 
+def ist_now():
+    return datetime.now(ZoneInfo("Asia/Kolkata"))
+
 
 def is_quiet_hours():
-    now = datetime.now().time()
+    now = ist_now().time()
     return now >= time(23, 0) or now <= time(6, 0)
 
 
@@ -116,7 +120,7 @@ Chart Status :
 {chart_status}
 
 Checked at :
-{datetime.now().strftime('%d %b %Y %I:%M %p')}
+{ist_now().strftime('%d %b %Y %I:%M %p')}
 """
 
     send_email(
