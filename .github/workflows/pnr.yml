@@ -1,0 +1,29 @@
+name: PNR Monitor
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # every hour
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run PNR Monitor
+        run: python pnr_monitor.py
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          PNR_GMAIL_ADDRESS: ${{ secrets.PNR_GMAIL_ADDRESS }}
+          PNR_GMAIL_APP_PASSWORD: ${{ secrets.PNR_GMAIL_APP_PASSWORD }}
